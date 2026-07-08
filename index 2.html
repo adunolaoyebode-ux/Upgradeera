@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adunola Upgrade Era</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ebony:#4B5043;
+    --violet:#240115;
+    --oxblood:#95190C;
+    --taupe:#B79492;
+    --sun:#F9C22E;
+    --cream:#F4EEE7;
+    --ink: var(--violet);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--violet);
+    color: var(--cream);
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--sun); color:var(--violet);}
+  a{color:inherit;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(36,1,21,0.88);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid rgba(249,194,46,0.15);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding-top:16px; padding-bottom:16px;}
+  .brand{font-family:'Fraunces', serif; font-weight:600; font-size:1.15rem; letter-spacing:0.01em;}
+  .brand span{color:var(--sun);}
+  nav ul{list-style:none; display:flex; gap:28px; font-size:0.85rem;}
+  nav a{text-decoration:none; color:var(--taupe); transition:color .2s;}
+  nav a:hover{color:var(--sun);}
+  .navlinks{display:flex;}
+  @media (max-width:640px){ .navlinks{display:none;} }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    padding:110px 0 90px;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(75,80,67,0.55), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(149,25,12,0.35), transparent 55%);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--sun); display:flex; align-items:center; gap:10px; margin-bottom:26px;
+  }
+  .eyebrow::before{content:""; width:26px; height:1px; background:var(--sun); display:inline-block;}
+  h1.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    line-height:1.02;
+    letter-spacing:-0.01em;
+    max-width:16ch;
+  }
+  h1.display em{font-style:italic; font-weight:300; color:var(--taupe);}
+  .hero p.sub{
+    margin-top:26px; max-width:52ch; font-size:1.08rem; color:#E7DED6;
+  }
+  .hero-actions{display:flex; gap:16px; margin-top:40px; flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono', monospace; font-size:0.82rem; letter-spacing:0.03em;
+    padding:13px 22px; border-radius:2px; text-decoration:none; display:inline-block;
+    border:1px solid transparent; transition:transform .15s ease, background .2s;
+  }
+  .btn-primary{background:var(--sun); color:var(--violet); font-weight:500;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{border-color:rgba(249,194,46,0.4); color:var(--cream);}
+  .btn-ghost:hover{border-color:var(--sun); color:var(--sun);}
+
+  /* ---------- DAY GAUGE (signature element) ---------- */
+  .gauge-card{
+    margin-top:64px;
+    border:1px solid rgba(183,148,146,0.3);
+    background:rgba(75,80,67,0.25);
+    border-radius:4px;
+    padding:26px 28px;
+    max-width:640px;
+  }
+  .gauge-top{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:10px;}
+  .gauge-label{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--taupe);}
+  .gauge-day{font-family:'Fraunces', serif; font-size:1.6rem; color:var(--sun);}
+  .strip{display:flex; gap:2px; margin-top:18px;}
+  .tick{flex:1; height:20px; background:rgba(244,238,231,0.1); border-radius:1px; position:relative;}
+  .tick.p1{background:rgba(183,148,146,0.25);}
+  .tick.p2{background:rgba(149,25,12,0.28);}
+  .tick.p3{background:rgba(75,80,67,0.5);}
+  .tick.done{background:var(--sun) !important;}
+  .tick.today{outline:2px solid var(--cream); outline-offset:1px;}
+  .strip-legend{display:flex; gap:22px; margin-top:14px; font-size:0.72rem; color:var(--taupe); font-family:'IBM Plex Mono', monospace; flex-wrap:wrap;}
+  .strip-legend .dot{width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:6px; vertical-align:middle;}
+  .setrow{display:flex; gap:10px; margin-top:20px; align-items:center; flex-wrap:wrap;}
+  .setrow input[type=date]{
+    background:transparent; border:1px solid rgba(183,148,146,0.4); color:var(--cream);
+    padding:8px 10px; border-radius:2px; font-family:'IBM Plex Mono', monospace; font-size:0.8rem;
+  }
+  .setrow button{
+    background:transparent; border:1px solid rgba(249,194,46,0.5); color:var(--sun);
+    padding:8px 14px; border-radius:2px; font-family:'IBM Plex Mono', monospace; font-size:0.8rem; cursor:pointer;
+  }
+  .setrow button:hover{background:rgba(249,194,46,0.12);}
+  .gauge-note{margin-top:10px; font-size:0.78rem; color:#9c8f8c;}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:80px 0;}
+  .section-head{max-width:56ch; margin-bottom:46px;}
+  .kicker{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--sun);}
+  h2.title{font-family:'Fraunces', serif; font-weight:600; font-size:clamp(1.7rem,3.4vw,2.4rem); margin-top:10px;}
+  .section-head p{margin-top:14px; color:var(--taupe);}
+
+  /* rhythm */
+  .rhythm{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:1px; background:rgba(183,148,146,0.2); border:1px solid rgba(183,148,146,0.2);}
+  .rhythm div{background:var(--violet); padding:26px 20px;}
+  .rhythm .glyph{font-size:1.4rem;}
+  .rhythm .name{font-family:'Fraunces', serif; margin-top:10px; font-size:1.02rem;}
+  .rhythm .when{font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--taupe); margin-top:4px; text-transform:uppercase; letter-spacing:0.06em;}
+
+  /* phases / roadmap */
+  .phase-block{margin-bottom:10px;}
+  .phase-head{
+    display:flex; align-items:center; gap:14px; padding:16px 0;
+    border-top:1px solid rgba(183,148,146,0.25);
+  }
+  .phase-tag{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; padding:4px 9px; border-radius:2px;
+    background:var(--ebony); color:var(--cream); letter-spacing:0.05em;
+  }
+  .phase-tag.p2{background:var(--oxblood);}
+  .phase-tag.p3{background:var(--taupe); color:var(--violet);}
+  .phase-title{font-family:'Fraunces', serif; font-size:1.15rem;}
+  .phase-weeks{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--taupe); margin-left:auto;}
+
+  .week-row{
+    border-top:1px solid rgba(183,148,146,0.15);
+    padding:18px 0; cursor:pointer;
+  }
+  .week-row-top{display:flex; align-items:center; gap:18px;}
+  .week-num{font-family:'IBM Plex Mono', monospace; color:var(--sun); font-size:0.85rem; min-width:52px;}
+  .week-theme{font-family:'Fraunces', serif; font-size:1.08rem;}
+  .week-series{color:var(--taupe); font-size:0.88rem; margin-left:auto; text-align:right; padding-left:14px;}
+  .week-detail{
+    max-height:0; overflow:hidden; transition:max-height .3s ease;
+    font-size:0.9rem; color:#DCD2C9;
+  }
+  .week-row.open .week-detail{max-height:220px; margin-top:14px;}
+  .week-detail .id-line{font-style:italic; color:var(--taupe); max-width:60ch;}
+  .week-detail .proj{margin-top:10px; font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--sun);}
+  .chev{margin-left:14px; font-family:'IBM Plex Mono', monospace; color:var(--taupe); transition:transform .25s;}
+  .week-row.open .chev{transform:rotate(45deg); color:var(--sun);}
+
+  /* portfolio */
+  .grid-12{display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:14px;}
+  .proj-card{
+    border:1px solid rgba(183,148,146,0.25); border-radius:4px; padding:22px 20px;
+    background:rgba(75,80,67,0.12); transition:border-color .2s, transform .2s;
+  }
+  .proj-card:hover{border-color:var(--sun); transform:translateY(-3px);}
+  .proj-idx{font-family:'IBM Plex Mono', monospace; color:var(--oxblood); background:var(--sun); display:inline-block; padding:1px 7px; border-radius:2px; font-size:0.72rem; font-weight:600;}
+  .proj-name{font-family:'Fraunces', serif; font-size:1.05rem; margin-top:12px;}
+  .proj-week{font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--taupe); margin-top:6px; text-transform:uppercase; letter-spacing:0.05em;}
+
+  /* hashtag / cta */
+  footer{padding:70px 0 50px; border-top:1px solid rgba(183,148,146,0.2);}
+  .tags{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;}
+  .tag{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--sun); border:1px solid rgba(249,194,46,0.35); padding:6px 12px; border-radius:20px;}
+  .foot-bottom{display:flex; justify-content:space-between; margin-top:50px; padding-top:24px; border-top:1px solid rgba(183,148,146,0.15); font-size:0.78rem; color:var(--taupe); flex-wrap:wrap; gap:10px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+  :focus-visible{outline:2px solid var(--sun); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Adunola <span>Upgrade Era</span></div>
+    <ul class="navlinks">
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#rhythm">Daily Rhythm</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">90 Days &middot; Build in Public</div>
+    <h1 class="display">Building the <em>economy</em><br>I couldn't clock into.</h1>
+    <p class="sub">A 90-day, public record of becoming an AI-native business builder &mdash; one 9-to-5 evening at a time. AI. Business. Building. Documented daily, not someday.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#journey">See the roadmap</a>
+      <a class="btn btn-ghost" href="#portfolio">View the portfolio</a>
+    </div>
+
+    <div class="gauge-card">
+      <div class="gauge-top">
+        <span class="gauge-label">Progress</span>
+        <span class="gauge-day" id="dayLabel">Day &mdash; / 90</span>
+      </div>
+      <div class="strip" id="strip"></div>
+      <div class="strip-legend">
+        <span><span class="dot" style="background:var(--ebony)"></span>Explore (1&ndash;4)</span>
+        <span><span class="dot" style="background:var(--oxblood)"></span>Go Deep (5&ndash;9)</span>
+        <span><span class="dot" style="background:var(--taupe)"></span>Launch (10&ndash;12)</span>
+        <span><span class="dot" style="background:var(--sun)"></span>Complete</span>
+      </div>
+      <div class="setrow">
+        <input type="date" id="startDate" aria-label="Day 1 date">
+        <button id="saveStart">Set Day 1</button>
+      </div>
+      <div class="gauge-note" id="gaugeNote">Set the date you started (or start today) so the tracker counts your real day.</div>
+    </div>
+  </div>
+</header>
+
+<section id="rhythm">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Every day, same shape</div>
+      <h2 class="title">The daily rhythm</h2>
+      <p>No two days are unplanned. Status lives in the <a href="#" style="color:var(--sun); text-decoration:underline;">Notion tracker</a> &mdash; this is just the shape of the day.</p>
+    </div>
+    <div class="rhythm">
+      <div><div class="glyph">🙏</div><div class="name">Prayer &amp; Bible</div><div class="when">Morning</div></div>
+      <div><div class="glyph">🤖</div><div class="name">AI School</div><div class="when">Morning</div></div>
+      <div><div class="glyph">📚</div><div class="name">Reading</div><div class="when">Afternoon</div></div>
+      <div><div class="glyph">📰</div><div class="name">Article + NotebookLM</div><div class="when">Afternoon</div></div>
+      <div><div class="glyph">💼</div><div class="name">Business School</div><div class="when">Evening</div></div>
+      <div><div class="glyph">🎥</div><div class="name">Creator School</div><div class="when">Evening</div></div>
+      <div><div class="glyph">🛠</div><div class="name">Build</div><div class="when">Evening</div></div>
+      <div><div class="glyph">📱</div><div class="name">Content</div><div class="when">Evening</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="journey">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Three phases, twelve weeks</div>
+      <h2 class="title">The journey</h2>
+      <p>Tap a week to open its identity statement and the project it ships.</p>
+    </div>
+    <div id="roadmap"></div>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">One ships every week</div>
+      <h2 class="title">The portfolio</h2>
+      <p>Twelve real projects, each one a business problem solved &mdash; not a tutorial followed.</p>
+    </div>
+    <div class="grid-12" id="portfolioGrid"></div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2 class="title" style="font-size:1.5rem;">Following along, or hiring?</h2>
+    <p style="color:var(--taupe); margin-top:12px; max-width:50ch;">Every Friday something new ships &mdash; a case study, a workflow, a working assistant. Reach out if one of these solves a problem you have.</p>
+    <div class="tags">
+      <span class="tag">#AdunolaUpgradeEra</span>
+      <span class="tag">#90DaysToBecomeMoreValuable</span>
+      <span class="tag">#BuildInPublic</span>
+      <span class="tag">#LearnBuildTeach</span>
+      <span class="tag">#AIForBusiness</span>
+    </div>
+    <div class="foot-bottom">
+      <span>Adunola Upgrade Era</span>
+      <span>What's one thing you learned today that made you more valuable?</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const WEEKS = [
+  {n:1, phase:1, theme:"AI Foundations", series:"Learning AI Without a Tech Background", id:"Every resource has to earn its place — beginner-friendly, practical, and best-in-class.", project:"Week 1 Resource Library"},
+  {n:2, phase:1, theme:"Prompt Engineering", series:"Getting Better Results from AI", id:"I don't use AI for shortcuts. I use it to think better, communicate better, and solve bigger problems.", project:"AI Resume & Career Assistant"},
+  {n:3, phase:1, theme:"Business Systems", series:"Learning to Think Like a Consultant", id:"I don't chase AI tools. I solve business problems. AI is one of the tools I use to create value.", project:"AI Business Process Audit"},
+  {n:4, phase:1, theme:"Personal Brand", series:"Building My Reputation in Public", id:"I don't build a personal brand to become famous. I build a reputation so opportunities find me first.", project:"Personal Brand Operating System"},
+  {n:5, phase:2, theme:"n8n Automation", series:"My First Business Automations", id:"I don't complete tasks manually if I can build a system that does them reliably.", project:"AI Content Operating System (n8n)"},
+  {n:6, phase:2, theme:"Make Automation", series:"Connecting AI to Real Work", id:"The most valuable professionals connect entire business processes into reliable systems.", project:"AI Content Automation Engine (Make)"},
+  {n:7, phase:2, theme:"AI Agents", series:"Building Smarter AI Assistants", id:"I don't just automate tasks. I build intelligent systems that help people make better decisions.", project:"AI Knowledge Assistant"},
+  {n:8, phase:2, theme:"Sales Automation", series:"Using AI to Help Businesses Grow", id:"Businesses don't buy AI. They buy more revenue, happier customers, and faster growth.", project:"AI Sales Assistant"},
+  {n:9, phase:2, theme:"HR Automation", series:"Building Better Workflows for Teams", id:"Technology should improve people's work — not replace their humanity.", project:"AI Recruitment & Operations Assistant"},
+  {n:10, phase:3, theme:"AI Project Management", series:"Reinventing Project Management with AI", id:"I don't manage projects. I design systems that help teams execute better, faster, with more clarity.", project:"AI Project Management OS"},
+  {n:11, phase:3, theme:"Consulting", series:"Becoming an AI Automation Consultant", id:"People don't hire me because I know AI. They hire me because I solve expensive business problems.", project:"AI Consultant Starter Kit"},
+  {n:12, phase:3, theme:"Launch", series:"Launching What I Built in 90 Days", id:"I don't finish this curriculum with certificates. I finish it with a business.", project:"AI Business Operating System (Capstone)"},
+];
+const PHASES = {1:{name:"Phase 1 — Explore", tag:"tag", weeks:"Weeks 1–4"}, 2:{name:"Phase 2 — Go Deep", tag:"p2", weeks:"Weeks 5–9"}, 3:{name:"Phase 3 — Launch", tag:"p3", weeks:"Weeks 10–12"}};
+const PORTFOLIO = [
+  "AI Email Assistant","Prompt Library","AI Business Audit","Personal Brand OS",
+  "n8n Automation Engine","Make Automation Engine","AI Knowledge Assistant","AI Sales Assistant",
+  "AI Recruitment Assistant","AI Project Management OS","AI Consultant Starter Kit","AI Business Operating System"
+];
+
+// Roadmap
+const roadmapEl = document.getElementById('roadmap');
+[1,2,3].forEach(p=>{
+  const block = document.createElement('div'); block.className='phase-block';
+  const head = document.createElement('div'); head.className='phase-head';
+  head.innerHTML = `<span class="phase-tag ${p===2?'p2':p===3?'p3':''}">PHASE ${p}</span><span class="phase-title">${PHASES[p].name.split('— ')[1]}</span><span class="phase-weeks">${PHASES[p].weeks}</span>`;
+  block.appendChild(head);
+  WEEKS.filter(w=>w.phase===p).forEach(w=>{
+    const row = document.createElement('div'); row.className='week-row';
+    row.innerHTML = `
+      <div class="week-row-top">
+        <span class="week-num">WK ${String(w.n).padStart(2,'0')}</span>
+        <span class="week-theme">${w.theme}</span>
+        <span class="week-series">${w.series}</span>
+        <span class="chev">+</span>
+      </div>
+      <div class="week-detail">
+        <div class="id-line">"${w.id}"</div>
+        <div class="proj">Ships: ${w.project}</div>
+      </div>`;
+    row.addEventListener('click', ()=> row.classList.toggle('open'));
+    block.appendChild(row);
+  });
+  roadmapEl.appendChild(block);
+});
+
+// Portfolio
+const pg = document.getElementById('portfolioGrid');
+PORTFOLIO.forEach((name,i)=>{
+  const c = document.createElement('div'); c.className='proj-card';
+  c.innerHTML = `<span class="proj-idx">${String(i+1).padStart(2,'0')}</span>
+    <div class="proj-name">${name}</div>
+    <div class="proj-week">Week ${i+1}</div>`;
+  pg.appendChild(c);
+});
+
+// Day gauge
+const stripEl = document.getElementById('strip');
+for(let i=1;i<=90;i++){
+  const t = document.createElement('div'); t.className='tick';
+  const week = Math.ceil(i/7.5) || 1;
+  const w = WEEKS.find(w2=>w2.n === Math.min(12, Math.ceil(i/7.5)));
+  if(w){ t.classList.add(w.phase===1?'p1':w.phase===2?'p2':'p3'); }
+  t.dataset.day = i;
+  stripEl.appendChild(t);
+}
+
+async function loadStart(){
+  try{
+    const r = await window.storage.get('adunola-start-date', false);
+    return r ? r.value : null;
+  }catch(e){ return null; }
+}
+async function saveStart(val){
+  try{ await window.storage.set('adunola-start-date', val, false); }catch(e){ console.error(e); }
+}
+
+function renderDay(startStr){
+  const note = document.getElementById('gaugeNote');
+  if(!startStr){
+    document.getElementById('dayLabel').textContent = 'Day — / 90';
+    note.textContent = "Set the date you started (or start today) so the tracker counts your real day.";
+    return;
+  }
+  const start = new Date(startStr + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const diffDays = Math.floor((today - start) / 86400000) + 1;
+  const day = Math.max(1, Math.min(90, diffDays));
+  document.getElementById('dayLabel').textContent = `Day ${day} / 90`;
+  document.querySelectorAll('.tick').forEach(t=>{
+    const d = Number(t.dataset.day);
+    t.classList.remove('today','done');
+    if(d < day) t.classList.add('done');
+    if(d === day) t.classList.add('today');
+  });
+  if(diffDays < 1){
+    note.textContent = "That date is in the future — the count will start once it arrives.";
+  } else if(diffDays > 90){
+    note.textContent = "90 days complete. Time for the graduation post.";
+  } else {
+    note.textContent = `Day 1 was ${start.toLocaleDateString(undefined,{month:'long', day:'numeric', year:'numeric'})}.`;
+  }
+}
+
+(async function init(){
+  const saved = await loadStart();
+  if(saved){ document.getElementById('startDate').value = saved; }
+  renderDay(saved);
+})();
+
+document.getElementById('saveStart').addEventListener('click', async ()=>{
+  const val = document.getElementById('startDate').value;
+  if(!val) return;
+  await saveStart(val);
+  renderDay(val);
+});
+</script>
+</body>
+</html>
